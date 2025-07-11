@@ -17,24 +17,18 @@ def app():
     Returns:
         Flask app instance configured for testing
     """
-    # Create a temporary file for the test database
-    db_fd, db_path = tempfile.mkstemp()
-    
-    # Create app with test configuration
     app = create_app('testing')
     app.config.update({
         'TESTING': True,
-        'SQLALCHEMY_DATABASE_URI': f'postgresql://admin:admin@localhost:5432/link_organizer_test'
+        'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
+        'SQLALCHEMY_TRACK_MODIFICATIONS': False,
     })
     
-    # Create the database and load test data
     with app.app_context():
         db.create_all()
         yield app
-    
-    # Clean up
-    os.close(db_fd)
-    os.unlink(db_path)
+        db.session.remove()
+        db.drop_all()
 
 @pytest.fixture
 def client(app):

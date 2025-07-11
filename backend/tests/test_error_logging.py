@@ -7,6 +7,7 @@ from unittest.mock import patch, MagicMock
 
 from models.error import Error
 from services.error_service import ErrorService
+from exceptions import ValidationError
 from extensions import db
 
 
@@ -81,7 +82,7 @@ class TestErrorService:
     def test_log_error_validation_failure(self, app):
         """Test error logging with missing required fields."""
         with app.app_context():
-            with pytest.raises(ValueError):
+            with pytest.raises(ValidationError):
                 ErrorService.log_error(
                     method='',
                     endpoint='',
@@ -205,17 +206,21 @@ class TestErrorService:
             db.session.add_all([old_error, recent_error])
             db.session.commit()
             
+            # Store IDs before deletion
+            old_error_id = old_error.id
+            recent_error_id = recent_error.id
+            
             # Delete errors older than 30 days
             deleted_count = ErrorService.delete_old_errors(days=30)
             
             assert deleted_count == 1
             
             # Check that old error is deleted
-            old_error_check = Error.query.get(old_error.id)
+            old_error_check = Error.query.get(old_error_id)
             assert old_error_check is None
             
             # Check that recent error still exists
-            recent_error_check = Error.query.get(recent_error.id)
+            recent_error_check = Error.query.get(recent_error_id)
             assert recent_error_check is not None
 
 
@@ -224,7 +229,7 @@ class TestErrorAPI:
     
     def test_get_errors_endpoint(self, client):
         """Test GET /api/errors endpoint."""
-        response = client.get('/api/errors')
+        response = client.get('/api/errors/')
         
         assert response.status_code == 200
         data = response.get_json()

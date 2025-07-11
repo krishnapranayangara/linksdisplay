@@ -120,7 +120,8 @@ class Link(db.Model):
         """
         try:
             result = urlparse(url)
-            return all([result.scheme, result.netloc])
+            # Only allow HTTP and HTTPS schemes
+            return all([result.scheme, result.netloc]) and result.scheme in ['http', 'https']
         except:
             return False
 

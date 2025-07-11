@@ -7,6 +7,9 @@ const logoUrl = process.env.PUBLIC_URL + '/linksdisplay-logo.png';
 const API_BASE_URL = 'http://localhost:3001/api';
 
 function App() {
+  // Check if view-only mode is enabled via URL parameter
+  const isViewOnly = new URLSearchParams(window.location.search).get('viewonly') === 'true';
+  
   // State
   const [categories, setCategories] = useState([]);
   const [links, setLinks] = useState([]);
@@ -230,27 +233,33 @@ function App() {
             onClick={() => setSelectedCategory(cat.id)}
           >
             {cat.name}
-            <span
-              className="delete-category"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDeleteCategory(cat.id);
-              }}
-              title="Delete category"
-            >
-              ×
-            </span>
+            {!isViewOnly && (
+              <span
+                className="delete-category"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteCategory(cat.id);
+                }}
+                title="Delete category"
+              >
+                ×
+              </span>
+            )}
           </button>
         ))}
-        <button className="add-btn" onClick={() => setShowAddCategory(true)}>
-          ＋
-        </button>
+        {!isViewOnly && (
+          <button className="add-btn" onClick={() => setShowAddCategory(true)}>
+            ＋
+          </button>
+        )}
       </div>
-      <div className="actions">
-        <button className="add-btn" onClick={() => setShowAddLink(true)}>
-          Add Link
-        </button>
-      </div>
+      {!isViewOnly && (
+        <div className="actions">
+          <button className="add-btn" onClick={() => setShowAddLink(true)}>
+            Add Link
+          </button>
+        </div>
+      )}
       <main>
         {sortedLinks.length === 0 ? (
           <div className="empty">No links yet. Add your first link!</div>
@@ -266,24 +275,26 @@ function App() {
                     {categories.find((c) => c.id === link.categoryId)?.name || 'Uncategorized'}
                   </span>
                 </div>
-                <div className="link-actions">
-                  <button onClick={() => handleStartEdit(link)} title="Edit">
-                    ✏️
-                  </button>
-                  <button onClick={() => handlePinLink(link.id)} title={link.pinned ? 'Unpin' : 'Pin'}>
-                    {link.pinned ? '📌' : '📍'}
-                  </button>
-                  <button onClick={() => handleDeleteLink(link.id)} title="Delete">
-                    🗑️
-                  </button>
-                </div>
+                {!isViewOnly && (
+                  <div className="link-actions">
+                    <button onClick={() => handleStartEdit(link)} title="Edit">
+                      ✏️
+                    </button>
+                    <button onClick={() => handlePinLink(link.id)} title={link.pinned ? 'Unpin' : 'Pin'}>
+                      {link.pinned ? '📌' : '📍'}
+                    </button>
+                    <button onClick={() => handleDeleteLink(link.id)} title="Delete">
+                      🗑️
+                    </button>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
         )}
       </main>
       {/* Add Link Modal */}
-      {showAddLink && (
+      {showAddLink && !isViewOnly && (
         <div className="modal-overlay" onClick={() => setShowAddLink(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <h2>Add Link</h2>
@@ -317,7 +328,7 @@ function App() {
         </div>
       )}
       {/* Edit Link Modal */}
-      {showEditLink && editingLink && (
+      {showEditLink && editingLink && !isViewOnly && (
         <div className="modal-overlay" onClick={() => setShowEditLink(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <h2>Edit Link</h2>
@@ -352,7 +363,7 @@ function App() {
         </div>
       )}
       {/* Add Category Modal */}
-      {showAddCategory && (
+      {showAddCategory && !isViewOnly && (
         <div className="modal-overlay" onClick={() => setShowAddCategory(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <h2>Add Category</h2>

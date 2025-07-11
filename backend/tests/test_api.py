@@ -446,7 +446,7 @@ class TestLinkEndpoints:
         
         assert response.status_code == 400
         assert data['success'] is False
-        assert 'short' in data['error'].lower()
+        assert 'at least 2 characters' in data['error'].lower()
     
     def test_get_pinned_links(self, client, sample_links):
         """Test getting pinned links."""
@@ -497,7 +497,7 @@ class TestErrorHandling:
     
     def test_400_error_missing_body(self, client):
         """Test 400 error handling for missing request body."""
-        response = client.post('/api/categories')
+        response = client.post('/api/categories', data='{}', content_type='application/json')
         data = json.loads(response.data)
         
         assert response.status_code == 400

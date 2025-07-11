@@ -218,40 +218,41 @@ class ErrorService:
             DatabaseError: If database operation fails
         """
         try:
-            query = Error.query
+            # Build base query with filters
+            base_query = Error.query
             
             if start_date:
-                query = query.filter(Error.request_time >= start_date)
+                base_query = base_query.filter(Error.request_time >= start_date)
             if end_date:
-                query = query.filter(Error.request_time <= end_date)
+                base_query = base_query.filter(Error.request_time <= end_date)
             
             # Get total count
-            total_requests = query.count()
+            total_requests = base_query.count()
             
             # Get error counts by status code
-            error_counts = db.session.query(
+            error_counts = base_query.with_entities(
                 Error.status_code,
                 db.func.count(Error.id).label('count')
-            ).filter(query.whereclause).group_by(Error.status_code).all()
+            ).group_by(Error.status_code).all()
             
             # Get error counts by method
-            method_counts = db.session.query(
+            method_counts = base_query.with_entities(
                 Error.method,
                 db.func.count(Error.id).label('count')
-            ).filter(query.whereclause).group_by(Error.method).all()
+            ).group_by(Error.method).all()
             
             # Get error counts by endpoint
-            endpoint_counts = db.session.query(
+            endpoint_counts = base_query.with_entities(
                 Error.endpoint,
                 db.func.count(Error.id).label('count')
-            ).filter(query.whereclause).group_by(Error.endpoint).order_by(
+            ).group_by(Error.endpoint).order_by(
                 db.func.count(Error.id).desc()
             ).limit(10).all()
             
             # Get average response time
-            avg_duration = db.session.query(
+            avg_duration = base_query.with_entities(
                 db.func.avg(Error.duration_ms)
-            ).filter(query.whereclause).scalar()
+            ).scalar()
             
             return {
                 'total_requests': total_requests,

@@ -142,10 +142,9 @@ class RequestLoggerMiddleware:
         Returns:
             bool: True if logging should be skipped
         """
-        # Skip logging for health checks and static files
+        # Skip logging for static files only
         skip_patterns = [
             'static',
-            'health',
             'favicon',
             'robots.txt'
         ]

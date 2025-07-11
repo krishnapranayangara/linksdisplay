@@ -1,0 +1,96 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.7, pytest-7.4.2, pluggy-1.0.0
+rootdir: /Users/krishnapranayangara/Downloads/LinkDisplay/backend
+configfile: pytest.ini
+plugins: cov-4.1.0, anyio-4.2.0, flask-1.2.0
+collected 75 items
+
+test_error_logging.py F                                                  [  1%]
+tests/test_api.py ...............................F....F                  [ 50%]
+tests/test_error_logging.py ...F....FFF.....F.F                          [ 76%]
+tests/test_models.py ...............F..                                  [100%]
+
+=================================== FAILURES ===================================
+______________________________ test_error_logging ______________________________
+test_error_logging.py:68: in test_error_logging
+    print(f"📈 Total requests: {stats.get('total_requests', 0)}")
+E   AttributeError: 'list' object has no attribute 'get'
+----------------------------- Captured stdout call -----------------------------
+🧪 Testing Error Logging Functionality
+==================================================
+
+1. Making API calls to generate logs...
+✅ API calls completed
+
+2. Viewing error logs...
+📊 Total logs: 0
+📄 Recent logs: 0
+
+3. Getting error statistics...
+________________ TestLinkEndpoints.test_search_links_short_term ________________
+tests/test_api.py:449: in test_search_links_short_term
+    assert 'short' in data['error'].lower()
+E   AssertionError: assert 'short' in 'search term must be at least 2 characters long'
+E    +  where 'search term must be at least 2 characters long' = <built-in method lower of str object at 0x1076e1650>()
+E    +    where <built-in method lower of str object at 0x1076e1650> = 'Search term must be at least 2 characters long'.lower
+________________ TestErrorHandling.test_400_error_missing_body _________________
+tests/test_api.py:503: in test_400_error_missing_body
+    assert response.status_code == 400
+E   assert 500 == 400
+E    +  where 500 = <WrapperTestResponse 160 bytes [500 INTERNAL SERVER ERROR]>.status_code
+______________ TestErrorService.test_log_error_validation_failure ______________
+tests/test_error_logging.py:85: in test_log_error_validation_failure
+    ErrorService.log_error(
+services/error_service.py:72: in log_error
+    raise ValidationError("Method, endpoint, and status_code are required")
+E   exceptions.ValidationError: Method, endpoint, and status_code are required
+__________________ TestErrorService.test_get_error_statistics __________________
+tests/test_error_logging.py:177: in test_get_error_statistics
+    assert stats['status_code_counts']['200'] == 2
+E   KeyError: '200'
+___________________ TestErrorService.test_delete_old_errors ____________________
+tests/test_error_logging.py:214: in test_delete_old_errors
+    old_error_check = Error.query.get(old_error.id)
+/opt/anaconda3/lib/python3.12/site-packages/sqlalchemy/orm/attributes.py:566: in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+/opt/anaconda3/lib/python3.12/site-packages/sqlalchemy/orm/attributes.py:1086: in get
+    value = self._fire_loader_callables(state, key, passive)
+/opt/anaconda3/lib/python3.12/site-packages/sqlalchemy/orm/attributes.py:1116: in _fire_loader_callables
+    return state._load_expired(state, passive)
+/opt/anaconda3/lib/python3.12/site-packages/sqlalchemy/orm/state.py:798: in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+/opt/anaconda3/lib/python3.12/site-packages/sqlalchemy/orm/loading.py:1661: in load_scalar_attributes
+    raise orm_exc.ObjectDeletedError(state)
+E   sqlalchemy.orm.exc.ObjectDeletedError: Instance '<Error at 0x107bccec0>' has been deleted, or its row is otherwise not present.
+____________________ TestErrorAPI.test_get_errors_endpoint _____________________
+tests/test_error_logging.py:229: in test_get_errors_endpoint
+    assert response.status_code == 200
+E   assert 308 == 200
+E    +  where 308 = <WrapperTestResponse streamed [308 PERMANENT REDIRECT]>.status_code
+__________ TestRequestLoggingMiddleware.test_middleware_logs_request ___________
+tests/test_error_logging.py:307: in test_middleware_logs_request
+    assert len(errors) > 0
+E   assert 0 > 0
+E    +  where 0 = len([])
+_______ TestRequestLoggingMiddleware.test_middleware_calculates_duration _______
+tests/test_error_logging.py:341: in test_middleware_calculates_duration
+    assert health_log is not None
+E   assert None is not None
+_____________________ TestLinkModel.test_link_validate_url _____________________
+tests/test_models.py:274: in test_link_validate_url
+    assert Link.validate_url('ftp://example.com') is False
+E   AssertionError: assert True is False
+E    +  where True = <function Link.validate_url at 0x106824e00>('ftp://example.com')
+E    +    where <function Link.validate_url at 0x106824e00> = Link.validate_url
+=========================== short test summary info ============================
+FAILED test_error_logging.py::test_error_logging - AttributeError: 'list' obj...
+FAILED tests/test_api.py::TestLinkEndpoints::test_search_links_short_term - A...
+FAILED tests/test_api.py::TestErrorHandling::test_400_error_missing_body - as...
+FAILED tests/test_error_logging.py::TestErrorService::test_log_error_validation_failure
+FAILED tests/test_error_logging.py::TestErrorService::test_get_error_statistics
+FAILED tests/test_error_logging.py::TestErrorService::test_delete_old_errors
+FAILED tests/test_error_logging.py::TestErrorAPI::test_get_errors_endpoint - ...
+FAILED tests/test_error_logging.py::TestRequestLoggingMiddleware::test_middleware_logs_request
+FAILED tests/test_error_logging.py::TestRequestLoggingMiddleware::test_middleware_calculates_duration
+FAILED tests/test_models.py::TestLinkModel::test_link_validate_url - Assertio...
+================= 10 failed, 65 passed, 144 warnings in 3.95s ==================
