@@ -1,0 +1,568 @@
+{
+	"info": {
+		"_postman_id": "link-organizer-api",
+		"name": "Link Organizer API",
+		"description": "Complete API collection for testing Link Organizer backend endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "link-organizer-api"
+	},
+	"item": [
+		{
+			"name": "Health Checks",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"health"
+							]
+						},
+						"description": "Get API health status and system metrics"
+					},
+					"response": []
+				},
+				{
+					"name": "Ping",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ping",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ping"
+							]
+						},
+						"description": "Simple connectivity test"
+					},
+					"response": []
+				},
+				{
+					"name": "API Documentation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/docs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"docs"
+							]
+						},
+						"description": "Get API documentation"
+					},
+					"response": []
+				}
+			],
+			"description": "Health check and monitoring endpoints"
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							]
+						},
+						"description": "Retrieve all categories ordered by name"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/categories/{{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"{{category_id}}"
+							]
+						},
+						"description": "Get a specific category by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Work\",\n  \"description\": \"Work-related links\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							]
+						},
+						"description": "Create a new category"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Work\",\n  \"description\": \"Updated work-related links\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories/{{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"{{category_id}}"
+							]
+						},
+						"description": "Update an existing category"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/categories/{{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"{{category_id}}"
+							]
+						},
+						"description": "Delete a category and set its links to uncategorized"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category Statistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/categories/stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"stats"
+							]
+						},
+						"description": "Get statistics about categories"
+					},
+					"response": []
+				}
+			],
+			"description": "Category management endpoints"
+		},
+		{
+			"name": "Links",
+			"item": [
+				{
+					"name": "Get All Links",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/links",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"links"
+							]
+						},
+						"description": "Get all links, ordered by pinned status and creation date"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Links by Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/links?category_id={{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"links"
+							],
+							"query": [
+								{
+									"key": "category_id",
+									"value": "{{category_id}}"
+								}
+							]
+						},
+						"description": "Get links filtered by category ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Link by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/links/{{link_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"links",
+								"{{link_id}}"
+							]
+						},
+						"description": "Get a specific link by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Link",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Google\",\n  \"url\": \"https://google.com\",\n  \"description\": \"Search engine\",\n  \"categoryId\": {{category_id}},\n  \"pinned\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/links",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"links"
+							]
+						},
+						"description": "Create a new link"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Link",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Google\",\n  \"url\": \"https://google.com\",\n  \"description\": \"Updated search engine description\",\n  \"categoryId\": {{category_id}},\n  \"pinned\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/links/{{link_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"links",
+								"{{link_id}}"
+							]
+						},
+						"description": "Update an existing link"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Link",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/links/{{link_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"links",
+								"{{link_id}}"
+							]
+						},
+						"description": "Delete a link"
+					},
+					"response": []
+				},
+				{
+					"name": "Toggle Pin Link",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"pinned\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/links/{{link_id}}/pin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"links",
+								"{{link_id}}",
+								"pin"
+							]
+						},
+						"description": "Toggle the pinned status of a link"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Links",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/links/search?q=google",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"links",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "google"
+								}
+							]
+						},
+						"description": "Search links by title (case-insensitive)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pinned Links",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/links/pinned",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"links",
+								"pinned"
+							]
+						},
+						"description": "Get all pinned links"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Link Statistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/links/stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"links",
+								"stats"
+							]
+						},
+						"description": "Get statistics about links"
+					},
+					"response": []
+				}
+			],
+			"description": "Link management endpoints"
+		},
+		{
+			"name": "Error Testing",
+			"item": [
+				{
+					"name": "404 Not Found",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/nonexistent",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"nonexistent"
+							]
+						},
+						"description": "Test 404 error handling"
+					},
+					"response": []
+				},
+				{
+					"name": "400 Bad Request - Missing Body",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							]
+						},
+						"description": "Test 400 error handling for missing request body"
+					},
+					"response": []
+				},
+				{
+					"name": "400 Bad Request - Invalid URL",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Invalid Link\",\n  \"url\": \"not-a-valid-url\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/links",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"links"
+							]
+						},
+						"description": "Test 400 error handling for invalid URL"
+					},
+					"response": []
+				}
+			],
+			"description": "Error handling test cases"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "category_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "link_id",
+			"value": "1",
+			"type": "string"
+		}
+	]
+} 
